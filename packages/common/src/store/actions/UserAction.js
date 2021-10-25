@@ -50,6 +50,7 @@ function* loginUserWorker(actions) {
   // };
 
 
+  try{
   const response = yield UserService.login(actions.payload);
  
   yield put({ type: USER_ACTIONS.LOGIN_SUCCESS, response });
@@ -81,6 +82,13 @@ function* loginUserWorker(actions) {
       //dispatch(success(FEEDYARD_ACTIONS.SELECTED_FEEDYAR_REQUEST, location));
       
       return response;
+    }
+    catch (error){
+      //dispatch(failure(USER_ACTIONS.LOGIN_FAILURE, error));
+      console.log(error)
+      yield put({ type: USER_ACTIONS.LOGIN_FAILURE, error });
+      throw handleError(error);
+    }
   
 
 }
