@@ -35,7 +35,8 @@ message.config({
 
 // Base Layout
 const BaseLayout = Loadable({
-  loader: () => import("./components/BaseLayout/BaseLayout"),
+  //loader: () => import("./components/BaseLayout/BaseLayout"),
+  loader: () => import("./components/Login/Login"),
   loading: Loading,
 });
 
