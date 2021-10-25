@@ -67,14 +67,14 @@ function BaseLayout(props) {
   const userPermissionListError = useSelector(state => state?.common?.[USER_PERMISSIONS + ERROR]);
   const userPermissionListLoading = useSelector(state => state?.common?.[getLoadingKey(USER_PERMISSIONS)]);
 
-  useEffect(() => {
-    !defaultLocation && 
-    dispatch(
-      updateDefaultLocation(
-        StorageService.instance.getDefaultLocation()
-      )
-    )
-  }, [defaultLocation]);
+  // useEffect(() => {
+  //   !defaultLocation && 
+  //   dispatch(
+  //     updateDefaultLocation(
+  //       StorageService.instance.getDefaultLocation()
+  //     )
+  //   )
+  // }, [defaultLocation]);
 
   // Get Feedyard List
   const getUserLocations = () => {
@@ -112,9 +112,9 @@ function BaseLayout(props) {
     dispatch(getData(URLS.GET_USER_PERMISSIONS, USER_PERMISSIONS, USER_PERMISSIONS, params));
   }
 
-  useEffect(() => {
-    getUserLocations();
-  }, []);
+  // useEffect(() => {
+  //   //getUserLocations();
+  // }, []);
 
 
   // Conditions to render layouts
