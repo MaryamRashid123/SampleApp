@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\packages",
+    "\\packages\\web",
+    "\\packages\\web\\src",
+    "\\packages\\web\\src\\components",
+    "\\packages\\web\\src\\components\\Layouts",
+    "\\packages\\web\\src\\components\\Layouts\\CattleManagement",
+    "\\packages\\web\\src\\components\\Layouts\\CattleManagement\\Lots",
+    "\\packages\\web\\src\\components\\Layouts\\CattleManagement\\Lots\\LotDetail",
+    "\\packages\\web\\src\\components\\Layouts\\CattleManagement\\Lots\\LotDetail\\Strategy"
+  ],
+  "SelectedNode": "\\packages\\common\\src\\services\\api\\ApiClient.js",
+  "PreviewInSolutionExplorer": false
+}

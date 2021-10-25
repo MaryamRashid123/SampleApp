@@ -1,0 +1,261 @@
+@font-face {
+    font-family: 'Robotoo';
+    src: url('../fonts/Roboto-Medium.woff2') format('woff2'), url('../fonts/Roboto-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Robotoo';
+    src: url('../fonts/Roboto-Bold.woff2') format('woff2'), url('../fonts/Roboto-Bold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Robotoo';
+    src: url('../fonts/Roboto-Light.woff2') format('woff2'), url('../fonts/Roboto-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Robotoo';
+    src: url('../fonts/Roboto-Regular.woff2') format('woff2'), url('../fonts/Roboto-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+/* ===================== App Icons =================== */
+@font-face {
+    font-family: 'fonticon';
+    src:  url('../fonts/fonticon.eot?8i7ig5');
+    src:  url('../fonts/fonticon.eot?8i7ig5#iefix') format('embedded-opentype'),
+      url('../fonts/fonticon.ttf?8i7ig5') format('truetype'),
+      url('../fonts/fonticon.woff?8i7ig5') format('woff'),
+      url('../fonts/fonticon.svg?8i7ig5#fonticon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+  }
+  
+  [class^="cicon-"], [class*=" cicon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'fonticon' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+  
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .cicon-cloud-computing:before {
+    content: "\e927";
+  }
+  .cicon-diskette:before {
+    content: "\e926";
+  }
+  .cicon-cards:before {
+    content: "\e924";
+  }
+  .cicon-table-grid:before {
+    content: "\e925";
+  }
+  .cicon-check-square:before {
+    content: "\f4db";
+  }
+  .cicon-circle:before {
+    content: "\f4fe";
+  }
+  .cicon-comment-alt-lines:before {
+    content: "\f534";
+  }
+  .cicon-dot-circle:before {
+    content: "\f591";
+  }
+  .cicon-plus-circle:before {
+    content: "\f789";
+  }
+  .cicon-sort-down:before {
+    content: "\f834";
+  }
+  .cicon-square:before {
+    content: "\f842";
+  }
+  .cicon-times-circle:before {
+    content: "\f8ae";
+  }
+  .cicon-angle-right1:before {
+    content: "\e917";
+  }
+  .cicon-arrow-right1:before {
+    content: "\e93a";
+  }
+  .cicon-check1:before {
+    content: "\e9e6";
+  }
+  .cicon-check-circle1:before {
+    content: "\e9e7";
+  }
+  .cicon-check-square1:before {
+    content: "\e9e9";
+  }
+  .cicon-exclamation-circle1:before {
+    content: "\eab6";
+  }
+  .cicon-exclamation-triangle1:before {
+    content: "\eab8";
+  }
+  .cicon-info-circle1:before {
+    content: "\eb8e";
+  }
+  .cicon-long-arrow-right1:before {
+    content: "\ebd5";
+  }
+  .cicon-minus1:before {
+    content: "\ec07";
+  }
+  .cicon-minus-circle1:before {
+    content: "\ec08";
+  }
+  .cicon-plus1:before {
+    content: "\ec68";
+  }
+  .cicon-plus-circle1:before {
+    content: "\ec69";
+  }
+  .cicon-stop1:before {
+    content: "\ed29";
+  }
+  .cicon-times1:before {
+    content: "\ed7a";
+  }
+  .cicon-times-circle1:before {
+    content: "\ee66";
+  }
+  .cicon-check-square11:before {
+    content: "\ef6a";
+  }
+  .cicon-square11:before {
+    content: "\f2d1";
+  }
+  .cicon-updated:before {
+    content: "\e923";
+  }
+  .cicon-heart-beat:before {
+    content: "\e921";
+  }
+  .cicon-pie-chart:before {
+    content: "\e922";
+  }
+  .cicon-double-check-colored .path1:before {
+    content: "\e91b";
+    color: rgb(111, 187, 46);
+  }
+  .cicon-double-check-colored .path2:before {
+    content: "\e91c";
+    margin-left: -1.025390625em;
+    color: rgb(173, 219, 49);
+  }
+  .cicon-farm-fill:before {
+    content: "\e91d";
+  }
+  .cicon-pencil-round:before {
+    content: "\e91e";
+  }
+  .cicon-red-dot-colored .path1:before {
+    content: "\e91f";
+    color: rgb(231, 110, 84);
+  }
+  .cicon-red-dot-colored .path2:before {
+    content: "\e920";
+    margin-left: -1em;
+    color: rgb(221, 82, 60);
+  }
+  .cicon-calendar-clock:before {
+    content: "\e91a";
+  }
+  .cicon-lbs:before {
+    content: "\e919";
+  }
+  .cicon-download:before {
+    content: "\e918";
+  }
+  .cicon-edit:before {
+    content: "\e915";
+  }
+  .cicon-view:before {
+    content: "\e916";
+  }
+  .cicon-trash-solid:before {
+    content: "\e914";
+  }
+  .cicon-trash:before {
+    content: "\e913";
+  }
+  .cicon-progress:before {
+    content: "\e912";
+  }
+  .cicon-exchange:before {
+    content: "\e911";
+  }
+  .cicon-plus-circle-thin:before {
+    content: "\e910";
+  }
+  .cicon-comment:before {
+    content: "\e90f";
+  }
+  .cicon-clock:before {
+    content: "\e90e";
+  }
+  .cicon-paper-pin:before {
+    content: "\e90d";
+  }
+  .cicon-printer:before {
+    content: "\e90c";
+  }
+  .cicon-bell:before {
+    content: "\e900";
+  }
+  .cicon-calendar:before {
+    content: "\e901";
+  }
+  .cicon-envelope:before {
+    content: "\e902";
+  }
+  .cicon-exit:before {
+    content: "\e903";
+  }
+  .cicon-farm:before {
+    content: "\e904";
+  }
+  .cicon-filter:before {
+    content: "\e905";
+  }
+  .cicon-gear:before {
+    content: "\e906";
+  }
+  .cicon-grid:before {
+    content: "\e907";
+  }
+  .cicon-home:before {
+    content: "\e908";
+  }
+  .cicon-list:before {
+    content: "\e909";
+  }
+  .cicon-user:before {
+    content: "\e90a";
+  }
+  .cicon-widget:before {
+    content: "\e90b";
+  }

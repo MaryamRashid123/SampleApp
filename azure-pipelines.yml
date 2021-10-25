@@ -1,0 +1,183 @@
+# Android reference: https://techcommunity.microsoft.com/t5/windows-dev-appconsult/using-azure-devops-to-create-a-ci-cd-pipeline-for-an-android/ba-p/1094422
+
+trigger:
+  branches:
+    include:
+    - mobile/dev
+    - mobile/qa
+
+variables:
+  - group: MobileEnv
+
+pool:
+  vmImage: 'macos-latest'
+
+steps:
+
+- checkout: self
+  persistCredentials: true
+  clean: true
+
+- task: NodeTool@0
+  displayName: 'Install Node'
+  inputs:
+    versionSpec: '12.19.0'
+
+- script: yarn install
+  displayName: Install Dependencies
+
+- script: |
+    mkdir -p packages/mobile/node_modules/@porkview/common
+    cp -R packages/common packages/mobile/node_modules/@porkview/common
+  displayName: Copy Common Directory
+
+- script: |
+    # Disable autocommit on version bump 
+    yarn config set version-sign-git-tag false
+    yarn config set version-git-tag false
+    yarn config set version-commit-hooks false
+
+    # Checkout branch where the build is triggered
+    git checkout $(Build.SourceBranchName)
+
+    # Extract exisitng version of mobile's package.json
+    oldVer=$(jq -r ".version" packages/mobile/package.json)
+
+    # Bump version
+    cd packages/mobile && yarn version --patch && cd ../..
+
+    # Add bumped version to staging
+    git add *
+
+    # Extract new version of mobile's package.json
+    newVer=$(jq -r ".version" packages/mobile/package.json)
+
+    # Set environment variables
+    echo "##vso[task.setvariable variable=OLD_VERSION]$oldVer"
+    echo "##vso[task.setvariable variable=NEW_VERSION]$newVer"
+  displayName: 'Bump version and set variables'
+
+- task: ios-bundle-version@1
+  displayName: 'Bump iOS version'
+  inputs:
+    sourcePath: 'packages/mobile/ios/PorkView/Info.plist'
+    versionCodeOption: 'buildid'
+    versionCode: '$(Build.BuildId)'
+    versionName: '$(NEW_VERSION)'
+    printFile: false
+
+- task: Gradle@2
+  displayName: 'Build APK'
+  inputs:
+    gradleWrapperFile: 'packages/mobile/android/gradlew'
+    workingDirectory: 'packages/mobile/android/'
+    options: '-PversionName=$(NEW_VERSION) -PversionCode=$(Build.BuildId)'
+    tasks: 'assembleRelease'
+    publishJUnitResults: false
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    gradleOptions: '-Xmx3072m'
+    sonarQubeRunAnalysis: false
+
+- task: AndroidSigning@3
+  displayName: 'Sign APK'
+  inputs:
+    apkFiles: 'packages/mobile/android/app/build/outputs/apk/release/*.apk'
+    apksignerKeystoreFile: 'pv-mobile-prod.keystore'
+    apksignerKeystorePassword: '$(AndroidKeyStorePassword)'
+    apksignerKeystoreAlias: '$(AndroidKeyAlias)'
+    apksignerKeyPassword: '$(AndroidKeyAliasPassword)'
+    zipalign: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish APK to artifacts'
+  inputs:
+    PathtoPublish: 'packages/mobile/android/app/build/outputs/apk/release'
+    ArtifactName: 'android'
+    publishLocation: 'Container'
+    
+- task: AppCenterDistribute@3
+  displayName: 'Upload APK to AppCenter'
+  inputs:
+    serverEndpoint: 'App Center'
+    appSlug: 'saadali-fmww/PorkView-Android'
+    appFile: 'packages/mobile/android/app/build/outputs/apk/release/app-release-unsigned.apk'
+    releaseNotesOption: 'file'
+    releaseNotesFile: 'packages/mobile/CHANGELOG.md'
+    isMandatory: true
+    destinationType: 'groups'
+    distributionGroupId: 'f940ccde-a812-4ade-98d8-76c3ab1d0c2e'
+    isSilent: true
+
+- script: |
+    tag="mobile_$(NEW_VERSION)"
+    echo "New tag $tag"
+    git add *
+    git commit -m "Update version from $(OLD_VERSION) to $(NEW_VERSION)"
+    git tag $tag
+    git pull --rebase origin $(Build.SourceBranchName)
+    git push origin $(Build.SourceBranchName)
+    git push --tags
+  displayName: Bump commit
+
+- task: InstallAppleCertificate@2
+  displayName: Install Apple Certificate
+  inputs:
+    certSecureFile: 'Folio3Certificate.p12'
+    certPwd: '$(AppleCertificatePassword)'
+    keychain: 'temp'
+    deleteCert: true
+  
+- task: InstallAppleProvisioningProfile@1
+  displayName: 'Install Apple Provisioning Profile'
+  inputs:
+    provisioningProfileLocation: 'secureFiles'
+    provProfileSecureFile: 'CactusFeeders_PorkView_Adhoc.mobileprovision'
+    removeProfile: true
+
+- task: CocoaPods@0
+  displayName: 'Install CocoaPods'
+  inputs:
+    workingDirectory: 'packages/mobile/ios'
+
+- task: Xcode@5
+  displayName: 'Build IPA'
+  inputs:
+    actions: 'build'
+    configuration: 'Release'
+    sdk: 'iphoneos'
+    xcWorkspacePath: 'packages/mobile/ios/PorkView.xcworkspace'
+    scheme: 'PorkView'
+    packageApp: true
+    exportPath: 'output'
+    signingOption: 'manual'
+    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+
+- task: CopyFiles@2
+  displayName: 'Copy IPA'
+  inputs:
+    contents: '**/*.ipa'
+    targetFolder: '$(build.artifactStagingDirectory)'
+    overWrite: true
+    flattenFolders: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish IPA to artifacts'
+  inputs:
+    PathtoPublish: '$(build.artifactStagingDirectory)'
+    ArtifactName: 'ios'
+    publishLocation: 'Container'
+
+- task: AppCenterDistribute@3
+  displayName: 'Upload IPA to AppCenter'
+  inputs:
+    serverEndpoint: 'App Center'
+    appSlug: 'saadali-fmww/PorkView-iOS'
+    appFile: 'output/PorkView.ipa'
+    releaseNotesOption: 'file'
+    releaseNotesFile: 'packages/mobile/CHANGELOG.md'
+    isMandatory: true
+    destinationType: 'groups'
+    distributionGroupId: '058a4704-ea24-4877-a2f0-bdfaff9335dc'
+    isSilent: true

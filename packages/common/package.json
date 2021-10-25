@@ -1,0 +1,12 @@
+{
+  "name": "@cattleview/common",
+  "main": "index.js",
+  "version": "1.0.0",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "date-fns": "^2.16.1",
+    "redux": "^4.0.5",
+    "redux-saga": "^1.1.3",
+    "redux-thunk": "^2.3.0"
+  }
+}

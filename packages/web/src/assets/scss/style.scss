@@ -1,0 +1,15 @@
+// Font Awsome
+@import '~font-awesome/css/font-awesome.min.css';
+
+// Importing Ant Design CSS
+// ANT-Design Doc: https://ant.design/docs/react/getting-started
+@import 'antd/dist/antd.css';
+
+// If you want to override variables do it here
+@import "variables";
+
+// If you want to add custom font do it here
+@import "fonts";
+
+// If you want to add something do it here
+@import "custom";
